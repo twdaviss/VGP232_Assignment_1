@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "VGP232_Assignment_1": {
+      "commandName": "Project",
+      "commandLineArgs": "-i data.csv -o output.csv -c -s BaseAttack"
+    }
+  }
+}
