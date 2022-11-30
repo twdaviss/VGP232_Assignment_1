@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 // TODO: Fill in your name and student number.
 // Assignment 2a
@@ -82,7 +85,7 @@ namespace Assignment2a
                         else
                         {
                             // This function returns a List<Weapon> once the data is parsed.
-                            results.Load(inputFile);
+                            results.LoadXML(inputFile);
                         }
                     }
                 }

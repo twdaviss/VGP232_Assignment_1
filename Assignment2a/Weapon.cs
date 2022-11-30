@@ -21,6 +21,7 @@ namespace Assignment2a
         public string SecondaryStat { get; set; }
         public string Passive { get; set; }
 
+       public Weapon() { }
         /// <summary>
         /// The Comparator function to check for name
         /// </summary>

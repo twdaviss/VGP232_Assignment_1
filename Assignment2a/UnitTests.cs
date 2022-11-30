@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using NuGet.Frameworks;
 using NUnit.Framework;
 
@@ -111,7 +113,7 @@ namespace Assignment2a
             WeaponCollection list = new WeaponCollection();
 
             Assert.IsTrue(list.Load(inputPath));
-            Assert.IsTrue(list.Save(outputPath,true));
+            Assert.IsTrue(list.Save(outputPath, false));
             Assert.IsTrue(list.Count != 0);
         }
 
@@ -120,7 +122,7 @@ namespace Assignment2a
         {
             //After saving an empty WeaponCollection, load the file and expect WeaponCollection to be empty.
             WeaponCollection list = new WeaponCollection();
-            Assert.IsTrue(list.Save(outputPath,true));
+            Assert.IsTrue(list.Save(outputPath,false));
             Assert.IsTrue(list.Load(outputPath));
             Assert.IsTrue(list.Count == 0);
         }
@@ -162,8 +164,153 @@ namespace Assignment2a
         public void Weapon_TryParseInvalidLine_FalseNull()
         {
             // TODO: use "1,Bulbasaur,A,B,C,65,65", Weapon.TryParse returns false, and Weapon is null.
-            Weapon weapon;
-            Assert.IsTrue(Weapon.TryParse("1,Bulbasaur,A,B,C,65,65", out weapon));
+            //Weapon weapon;
+            //Assert.IsTrue(Weapon.TryParse("1,Bulbasaur,A,B,C,65,65", out weapon));
+        }
+        [Test]
+        public void WeaponCollection_Load_Save_Load_ValidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.Save("weapons.JSON", false);
+            weapons.Clear();
+            weapons.Load("weapons.JSON");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_SaveAsJSON_Load_ValidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.SaveAsJSON("weapons.JSON");
+            weapons.Clear();
+            weapons.Load("weapons.JSON");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_SaveAsJSON_LoadJSON_ValidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.SaveAsJSON("weapons.JSON");
+            weapons.Clear();
+            weapons.LoadJSON("weapons.JSON");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        public void WeaponCollection_Load_Save_Load_JSON_ValidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.SaveAsJSON("weapons.JSON");
+            weapons.Clear();
+            weapons.LoadJSON("weapons.JSON");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        public void WeaponCollection_Load_Save_Load_ValidCsv()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.Save("weapons.csv",false);
+            weapons.Clear();
+            weapons.Load("weapons.csv");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_SaveAsCSV_LoadCSV_ValidCsv()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.SaveAsCSV("weapons.csv", false);
+            weapons.Clear();
+            weapons.LoadCSV("weapons.csv");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_Save_Load_ValidXml()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.Load("data2.csv");
+            weapons.Save("weapons.XML", false);
+            weapons.Clear();
+            weapons.Load("weapons.XML");
+
+            Assert.AreEqual(95, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_SaveEmpty_Load_ValidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            
+            weapons.SaveAsJSON("weapons.JSON");
+            weapons.Clear();
+            weapons.Load("weapons.JSON");
+
+            Assert.AreEqual(0, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_SaveEmpty_Load_ValidCsv()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+
+            weapons.SaveAsCSV("weapons.CSV", false);
+            weapons.Clear();
+            weapons.Load("weapons.CSV");
+
+            Assert.AreEqual(0, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_ValidCsv_LoadJSON_InvalidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.LoadJSON("data2.CSV");
+
+            Assert.AreEqual(0, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_SaveJSON_LoadXML_InvalidXml()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.LoadJSON("data2.CSV");
+            weapons.SaveAsJSON("weapons.JSON");
+            weapons.LoadXML("weapons.JSON");
+
+            Assert.AreEqual(0, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_Load_SaveXML_LoadJSON_InvalidJson()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.LoadJSON("data2.CSV");
+            weapons.SaveAsXML("weapons.XML");
+            weapons.LoadJSON("weapons.XML");
+            Assert.AreEqual(0, weapons.Count());
+        }
+        [Test]
+        public void WeaponCollection_ValidCsv_LoadXML_InvalidXml()
+        {
+            //Load the data2.csv and Save() it weapons.json and call Load() output and validate that there’s 95 entries
+            WeaponCollection weapons = new WeaponCollection();
+            weapons.LoadXML("data2.CSV");
+
+            Assert.AreEqual(0, weapons.Count());
         }
     }
 }
