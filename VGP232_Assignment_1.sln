@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment1", "VGP232_Assig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assignment2a", "Assignment2a\Assignment2a.csproj", "{628B11FB-9182-45CC-A433-75D29522324E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeaponLib", "WeaponLib\WeaponLib.csproj", "{FE185914-2070-4628-A74C-13D768988CE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment2C", "Assignment2C\Assignment2C.csproj", "{130AE852-2DDA-41B7-8725-C3BE01401419}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{628B11FB-9182-45CC-A433-75D29522324E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{628B11FB-9182-45CC-A433-75D29522324E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{628B11FB-9182-45CC-A433-75D29522324E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE185914-2070-4628-A74C-13D768988CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE185914-2070-4628-A74C-13D768988CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE185914-2070-4628-A74C-13D768988CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE185914-2070-4628-A74C-13D768988CE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{130AE852-2DDA-41B7-8725-C3BE01401419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{130AE852-2DDA-41B7-8725-C3BE01401419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{130AE852-2DDA-41B7-8725-C3BE01401419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{130AE852-2DDA-41B7-8725-C3BE01401419}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

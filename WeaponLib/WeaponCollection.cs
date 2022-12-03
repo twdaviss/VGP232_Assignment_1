@@ -10,14 +10,15 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using static Assignment2a.Weapon;
+using static WeaponLib.Weapon;
 
-namespace Assignment2a
+namespace WeaponLib
 {
     public class WeaponCollection : List<Weapon>, IPersistence
     {
         public WeaponCollection() { }
-        public int GetHighestBaseAttack() {
+        public int GetHighestBaseAttack()
+        {
             int highest = this[0].BaseAttack;
             for (int i = 0; i < this.Count; i++)
             {
@@ -29,7 +30,8 @@ namespace Assignment2a
             }
             return highest;
         }
-        public int GetLowestBaseAttack() {
+        public int GetLowestBaseAttack()
+        {
             int lowest = this[0].BaseAttack;
             for (int i = 0; i < this.Count; i++)
             {
@@ -40,8 +42,9 @@ namespace Assignment2a
             }
             return lowest;
         }
-        public List<Weapon> GetAllWeaponsOfType(WeaponType type) {
-        WeaponCollection list = new WeaponCollection();
+        public List<Weapon> GetAllWeaponsOfType(WeaponType type)
+        {
+            WeaponCollection list = new WeaponCollection();
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -52,8 +55,9 @@ namespace Assignment2a
             }
             return list;
         }
-        public List<Weapon> GetAllWeaponsOfRarity(int stars) {
-        WeaponCollection list = new WeaponCollection();
+        public List<Weapon> GetAllWeaponsOfRarity(int stars)
+        {
+            WeaponCollection list = new WeaponCollection();
 
             for (int i = 0; i < this.Count; i++)
             {
@@ -64,19 +68,37 @@ namespace Assignment2a
             }
             return list;
         }
-        public void SortBy(string columnName) {
-        
-        
-        
+        public void SortBy(string columnName)
+        {
+            switch(columnName) {
+                case "Passive":
+                    this.Sort(CompareByPassive);
+                    break;
+                case "Type":
+                    this.Sort(CompareByType);
+                    break;
+                case "BaseAttack":
+                    this.Sort(CompareByAttack);
+                    break;
+                case "SecondaryStat":
+                    this.Sort(CompareBySecondary);
+                    break;
+                case "Rarity":
+                    this.Sort(CompareByRarity);
+                    break;
+                case "Name":
+                    this.Sort(CompareByName);
+                    break;
+            }
         }
-//        // read file into a string and deserialize JSON to a type
-//        Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"c:\movie.json"));
+        //        // read file into a string and deserialize JSON to a type
+        //        Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"c:\movie.json"));
 
-//// deserialize JSON directly from a file
-//using (StreamReader file = File.OpenText(@"c:\movie.json"))
-//{
-//    JsonSerializer serializer = new JsonSerializer();
-//    Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
+        //// deserialize JSON directly from a file
+        //using (StreamReader file = File.OpenText(@"c:\movie.json"))
+        //{
+        //    JsonSerializer serializer = new JsonSerializer();
+        //    Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
 
         public bool Load(string fileName)
         {
@@ -119,11 +141,12 @@ namespace Assignment2a
         {
             if (File.Exists(fileName) && (System.IO.Path.GetExtension(fileName) == ".JSON"))
             {
-                    WeaponCollection weapons = JsonConvert.DeserializeObject<WeaponCollection>(File.ReadAllText(fileName));
-                    
-                    for (int i = 0; i < weapons.Count(); i++){
-                        this.Add(weapons[i]);
-                    }
+                WeaponCollection weapons = JsonConvert.DeserializeObject<WeaponCollection>(File.ReadAllText(fileName));
+
+                for (int i = 0; i < weapons.Count(); i++)
+                {
+                    this.Add(weapons[i]);
+                }
 
                 return true;
             }
@@ -136,15 +159,11 @@ namespace Assignment2a
         {
             if (File.Exists(fileName) && (System.IO.Path.GetExtension(fileName) == ".XML"))
             {
-                FileStream fs = new FileStream(fileName, FileMode.Open);
-                //fs.Position = 0;
+                FileStream fs = new FileStream(fileName, FileMode.Create);
+                fs.Position = 0;
                 XmlSerializer xs = new XmlSerializer(typeof(List<Weapon>));
 
                 List<Weapon> weapons = (List<Weapon>)xs.Deserialize(fs);
-                for (int i = 0; i < weapons.Count(); i++)
-                {
-                    this.Add(weapons[i]);
-                }
                 fs.Close();
                 return true;
             }
@@ -199,12 +218,12 @@ namespace Assignment2a
         public bool SaveAsJSON(string fileName)
         {
             List<Weapon> list = this;
-                using (StreamWriter file = File.CreateText(fileName))
-                {
-                     file.Write(JsonConvert.SerializeObject(list));
-                    
-                }
-                return true;
+            using (StreamWriter file = File.CreateText(fileName))
+            {
+                file.Write(JsonConvert.SerializeObject(list));
+
+            }
+            return true;
         }
         public bool SaveAsXML(string fileName)
         {
@@ -219,46 +238,53 @@ namespace Assignment2a
         }
         public bool SaveAsCSV(string fileName, bool appendToFile)
         {
-                if (!string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                FileStream fs;
+
+                // Check if the append flag is set, and if so, then open the file in append mode; otherwise, create the file to write.
+                if (appendToFile && File.Exists((fileName)))
                 {
-                    FileStream fs;
-
-                    // Check if the append flag is set, and if so, then open the file in append mode; otherwise, create the file to write.
-                    if (appendToFile && File.Exists((fileName)))
-                    {
-                        fs = File.Open(fileName, FileMode.Append);
-                    }
-                    else
-                    {
-                        fs = File.Open(fileName, FileMode.Create);
-                    }
-
-                    // opens a stream writer with the file handle to write to the output file.
-                    using (StreamWriter writer = new StreamWriter(fs))
-                    {
-                        // Hint: use writer.WriteLine
-                        // TODO: write the header of the output "Name,Type,Rarity,BaseAttack"
-                        writer.WriteLine("Name,Type,Rarity,BaseAttack");
-                        // TODO: use the writer to output the results.
-                        for (int i = 0; i < this.Count; i++)
-                        {
-                            writer.WriteLine(this[i].ToString());
-                        }
-                        // TODO: print out the file has been saved.
-                        Console.WriteLine("File Saved");
-
-                    }
+                    fs = File.Open(fileName, FileMode.Append);
                 }
                 else
                 {
-                    // prints out each entry in the weapon list results.
+                    fs = File.Open(fileName, FileMode.Create);
+                }
+
+                // opens a stream writer with the file handle to write to the output file.
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    // Hint: use writer.WriteLine
+                    // TODO: write the header of the output "Name,Type,Rarity,BaseAttack"
+                    writer.WriteLine("Name,Type,Rarity,BaseAttack");
+                    // TODO: use the writer to output the results.
                     for (int i = 0; i < this.Count; i++)
                     {
-                        Console.WriteLine(this[i]);
+                        writer.WriteLine(this[i].ToString());
                     }
+                    // TODO: print out the file has been saved.
+                    Console.WriteLine("File Saved");
+
                 }
+            }
+            else
+            {
+                // prints out each entry in the weapon list results.
+                for (int i = 0; i < this.Count; i++)
+                {
+                    Console.WriteLine(this[i]);
+                }
+            }
             Console.WriteLine("Done!");
             return true;
+        }
+
+        public void CopyTo(List<Weapon> sortedList)
+        {
+            WeaponCollection collection;
+            collection = this;
+            sortedList = collection;
         }
     }
 }
